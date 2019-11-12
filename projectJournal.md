@@ -1,5 +1,29 @@
 # T800 Project Journal
 
+Date: November 10, 2019
+
+### Amit: User Profile
+
+#### Features:
+- Register new user in system
+- Users can update profile
+- Users can delete profile
+- Create an authentication feature to user
+
+#### Requirements:
+- Learn basic React, Go and authentication
+- Develop UI component in React for Login. 
+- Create Login authentication 
+- Implement Go API’s
+  - Create new user profile
+  - Authenticate user
+  - View user profile
+  - Update user profile
+  - Delete user profile
+- Design architecture for microservice
+- Implement logging mechanism
+- Create Unit tests
+
 ### Neil: Contest Management
 
 #### Features:
