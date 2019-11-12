@@ -24,3 +24,19 @@
 * Design scalable architecture - AFK scale cube
 * Log all service calls, API calls, and user details
 * Create unit tests 
+
+### Shabari: Grading and Awards
+#### Features
+* Allow the creator of the contest to assign grades. (There could be multiple graders)
+* Creator will also have the option to provide awards for the contest.
+* Once the final grades are out anyone can view the leaderboard.
+* The Creator will be able to view scores given by each grader.
+
+#### Requirements
+* Understand Go APIs (gorilla/mux), essentials of ReactJs, Kubernetes and AWS development pipeline.
+* Setup MongoDB cluster to store grades, award details.
+* Setup Redis to dynamically keep track of leaderboard.
+* Go code to perform CRUD operations on grades.
+* Unit tests to check functions performing CRUD operations.
+* REST APIs to access the CRUD operations.
+* Web UI for graders and the general public.
