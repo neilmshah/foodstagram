@@ -5,15 +5,17 @@ Date: November 10, 2019
 ### Amit: User Profile
 
 #### Features:
+
 - Register new user in system
 - Users can update profile
 - Users can delete profile
 - Create an authentication feature to user
 
 #### Requirements:
+
 - Learn basic React, Go and authentication
-- Develop UI component in React for Login. 
-- Create Login authentication 
+- Develop UI component in React for Login.
+- Create Login authentication
 - Implement Go API’s
   - Create new user profile
   - Authenticate user
@@ -53,12 +55,11 @@ Date: November 10, 2019
 
 ### Priyal: Team Management
 
-####Features:
+#### Features:
 
-- Everyone should be able to see the teams
-- Users should be able to create teams
-- Users should be able to update team details
-- Users should be able to delete team
+- Everyone should be able to get the images and their description
+- Logged-in Users should be able to post images
+- Logged-in users should be able to update description
 
 #### Requirements:
 
@@ -66,10 +67,9 @@ Date: November 10, 2019
 - Understand AWS development pipeline
 - UI for team details
 - Create a microservice for team details management with the following APIs:
-  - Create a team
-  - Update team details
-  - View team details
-  - Delete team
+  - Post image
+  - Update description for image
+  - View image and description
 - Setup MongoDB cluster for team details management
 - Cloudwatch integration for API logs
 
