@@ -77,17 +77,17 @@ Date: November 10, 2019
 
 #### Features
 
-- Allow the creator of the contest to assign grades. (There could be multiple graders)
-- Creator will also have the option to provide awards for the contest.
-- Once the final grades are out anyone can view the leaderboard.
-- The Creator will be able to view scores given by each grader.
+- Allow users to comment and like posts. (There could be multiple users)
+- Users can edit or delete comments on any post
+- Users can dislike a previously liked post
+
 
 #### Requirements
 
 - Understand Go APIs (gorilla/mux), essentials of ReactJs, Kubernetes and AWS development pipeline.
 - Setup MongoDB cluster to store grades, award details.
-- Setup Redis to dynamically keep track of leaderboard.
-- Go code to perform CRUD operations on grades.
+- Go code to perform CRUD operations on comments.
 - Unit tests to check functions performing CRUD operations.
 - REST APIs to access the CRUD operations.
-- Web UI for graders and the general public.
+- Web UI for the comments and like to display to users.
+
