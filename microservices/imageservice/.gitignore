@@ -1,0 +1,5 @@
+**/pkg/
+/src/gopkg.in/
+.DS_Store
+/src/github.com/
+/bin
