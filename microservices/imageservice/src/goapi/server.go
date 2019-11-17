@@ -14,9 +14,16 @@ func NewServer() *negroni.Negroni {
 	})
 	n := negroni.Classic()
 	mx := mux.NewRouter()
+	initConfig()
 	initRoutes(mx, formatter)
 	n.UseHandler(mx)
 	return n
+}
+
+// Initialize Config Variables
+func initConfig() {
+	initSecretFromEnv()
+	initConfigFileFromS3()
 }
 
 // API Routes
