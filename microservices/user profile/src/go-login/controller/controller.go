@@ -131,5 +131,8 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func ProfileHandler(w http.ResponseWriter, r *http.Request) {
+	
+}
 
 }
