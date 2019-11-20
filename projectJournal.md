@@ -89,3 +89,12 @@ Date: November 10, 2019
 - REST APIs to access the CRUD operations.
 - Web UI for the comments and like to display to users.
 
+Date: November 15, 2019
+
+### Priyal
+- Created base code for image service.
+- Created MongoDB sharded cluster and hosted in EC2 private instance.
+- Added get image API.
+- React code for front end.
+- Setup S3 bucket to store config file.
+- Changes in Go code to read S3 bucket credentials from environment variables and use them to get config file so that the code repository does not expose any credentials.
