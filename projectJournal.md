@@ -26,29 +26,27 @@ Date: November 10, 2019
 - Implement logging mechanism
 - Create Unit tests
 
-### Neil: Contest Management
+### Neil: Timeline Service
 
 #### Features:
 
-- Everyone can see the contest page as the default landing page
-- Admins can create a contest for a competition or project
-- Admins can update a contest’s description, etc. if required
-- Admins can delete/deactivate/close contests
-- If student clicks on any of the contest, it will redirect to team management page
+- Everyone can see the timeline page as the default landing page
+- Fast READ request on timeline page
+- Internal POST image into timeline through Image service
+- Internal POST comment count and like count through comment service
 
 #### Requirements:
 
 - Understand React
-- Create UI Contest Page using React
+- Create UI timeline Page using React
 - Understanding GO API framework - Gorilla Mux
-- Create a microservice structure for Contest Management
+- Create a microservice structure for timeline service
 - Implement GO API’s for this microservice:
-  - Create Contest
-  - Update Contest
-  - Delete Contest
-  - View Contests
-- Setup MongoDB cluster for storage and replication
-- Setup Redis elastic cache for reading contests
+  - GET timeline
+  - Add Image details
+  - Update Comment count
+  - Update Like count
+- Setup REDIS cluster for storage and replication
 - Design scalable architecture - AFK scale cube
 - Log all service calls, API calls, and user details
 - Create unit tests
