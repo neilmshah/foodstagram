@@ -9,13 +9,18 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-
 	"github.com/dgrijalva/jwt-go"
 	"go.mongodb.org/mongo-driver/bson"
 	"golang.org/x/crypto/bcrypt"
+	"github.com/google/uuid"
 )
+
+
+
+
+
 func enableCors(w *http.ResponseWriter) {
-	fmt.Println("Message") 
+	
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 }
 
@@ -52,7 +57,7 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			user.Password = string(hash)
-
+			user.UserID = uuid.New().String()
 			_, err = collection.InsertOne(context.TODO(), user)
 			if err != nil {
 				res.Error = "Error While Creating User, Try Again"
@@ -72,6 +77,12 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	res.Result = "Username already Exists!!"
 	json.NewEncoder(w).Encode(res)
 	return
+}
+
+func PingHandler(w http.ResponseWriter, r *http.Request) {
+	var res model.ResponseResult
+	res.Result ="API version 1.0 alive!"
+	json.NewEncoder(w).Encode(res)
 }
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
@@ -155,6 +166,5 @@ func ProfileHandler(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(res)
 		return
 	}
-
 
 }
