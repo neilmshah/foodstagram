@@ -84,12 +84,15 @@ func updateCommentCountRedis(image_id string, count int64) {
 
 	b, _ := json.Marshal(img)
 	s := string(b)
-	reply[image_id] = s
 
-	cluster.Do("HMSET", "timeline", image_id, reply)
+	cluster.Do("HMSET", "timeline", image_id, s)
 }
 
 func updateLikeCountRedis(image_id string, count int64) {
+	fmt.Println("In UpdateLikeCountRedis")
+	fmt.Println("image id: ", image_id)
+	fmt.Println("new count: ", count)
+	
 	cluster, err := redis.NewCluster(
 		&redis.Options{
 		StartNodes: []string{"10.0.1.211:6379", "10.0.1.119:6379", "10.0.1.230:6379"},
@@ -113,16 +116,18 @@ func updateLikeCountRedis(image_id string, count int64) {
 	}
 
 	image_details := reply[image_id]
+	fmt.Println("Image details to update: ", image_details)
 	var img image
 	bytes := []byte(image_details)
 	json.Unmarshal(bytes,&img)
+	fmt.Println("Old like count: ", img.LikeCount)
 	img.LikeCount = count
+	fmt.Println("Updated like count: ", img.LikeCount)
 
 	b, _ := json.Marshal(img)
 	s := string(b)
-	reply[image_id] = s
 
-	cluster.Do("HMSET", "timeline", image_id, reply)
+	cluster.Do("HMSET", "timeline", image_id, s)
 }
 
 func setKeyRedis(key string, value string) {

@@ -109,7 +109,7 @@ func updatecomments(formatter *render.Render) http.HandlerFunc {
 			formatter.JSON(w, http.StatusOK, struct{ Error string }{"Image ID missing in URL"})
 		}
 
-		updateCommentCountRedis(image_id, commentCount.num)
+		updateCommentCountRedis(image_id, commentCount.Num)
 
 		formatter.JSON(w, http.StatusOK, struct{ Status string }{"Comment count updated"})
 	}
@@ -122,13 +122,12 @@ func updatelikes(formatter *render.Render) http.HandlerFunc {
 
 		params := mux.Vars(req)
 		var image_id string = params["image_id"]
-		fmt.Println(image_id)
 
 		if image_id == "" {
 			formatter.JSON(w, http.StatusOK, struct{ Error string }{"Image ID missing in URL"})
 		}
 
-		updateLikeCountRedis(image_id, likeCount.num)
+		updateLikeCountRedis(image_id, likeCount.Num)
 
 		formatter.JSON(w, http.StatusOK, struct{ Status string }{"Like count updated"})
 	}

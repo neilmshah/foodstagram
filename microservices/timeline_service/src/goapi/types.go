@@ -12,5 +12,9 @@ type image struct {
 }
 
 type count struct {
-	num				int64
+	Num				int64
+}
+
+type count2 struct {
+	Num				string
 }
