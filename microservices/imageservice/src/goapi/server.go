@@ -51,6 +51,12 @@ func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 }
 
+func setupResponse(w *http.ResponseWriter, req *http.Request) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+    (*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+    (*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+}
+
 // API Get Image Handler
 func imageHandler(formatter *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
@@ -88,12 +94,6 @@ func imageHandler(formatter *render.Render) http.HandlerFunc {
 	}
 }
 
-func setupResponse(w *http.ResponseWriter, req *http.Request) {
-	(*w).Header().Set("Access-Control-Allow-Origin", "*")
-    (*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-    (*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
-}
-
 // API POST Image Handler
 func imagePostHandler(formatter *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
@@ -112,7 +112,7 @@ func imagePostHandler(formatter *render.Render) http.HandlerFunc {
 
 		foodImageFile, _, err := req.FormFile("foodImage")
 		if err != nil {
-			fmt.Println("Error in getting the file", err, image,foodImageFile )
+			fmt.Println("Error in getting the file", err, image, foodImageFile)
 			var errorResponse ErrorResponse
 			errorResponse.Message = "Invalid Request"
 			formatter.JSON(w, http.StatusBadRequest, errorResponse)
@@ -152,6 +152,7 @@ func imagePostHandler(formatter *render.Render) http.HandlerFunc {
 			formatter.JSON(w, http.StatusInternalServerError, errorResponse)
 			return
 		}
+		go publishSNS(image)
 		formatter.JSON(w, http.StatusOK, image)
 	}
 }
