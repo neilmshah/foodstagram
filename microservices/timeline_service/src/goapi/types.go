@@ -6,7 +6,7 @@ type image struct {
 	Url				string
 	UserId			string
 	UserName		string
-	Timestamp		string
+	Timestamp		int64
 	LikeCount		int64
 	CommentCount	int64
 }
