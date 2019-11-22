@@ -1,0 +1,8 @@
+*/node_modules/*
+Frondend/.DS_Store
+Frondend/.DS_Store
+**/pkg/
+/src/gopkg.in/
+.DS_Store
+backend/src/github.com/
+/bin
