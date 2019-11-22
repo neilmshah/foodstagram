@@ -1,6 +1,6 @@
 # T800 Project Journal
 
-Date: November 10, 2019
+## Date: November 10, 2019
 
 ### Amit: User Profile
 
@@ -89,7 +89,7 @@ Date: November 10, 2019
 - REST APIs to access the CRUD operations.
 - Web UI for the comments and like to display to users.
 
-Date: November 15, 2019
+## Date: November 15, 2019
 
 ### Priyal
 - Created base code for image service.
@@ -98,3 +98,13 @@ Date: November 15, 2019
 - React code for front end.
 - Setup S3 bucket to store config file.
 - Changes in Go code to read S3 bucket credentials from environment variables and use them to get config file so that the code repository does not expose any credentials.
+
+## Date: November 20, 2019
+
+### Priyal
+- Added post image API.
+- S3 integration to store image to S3 in private bucket.
+- Front end changes to add a post.
+- Setup SNS to send messages to timeline service.
+- AWS setup to deploy image service to private ec2 instance and setup network load balancer, auto scaling and API gateway.
+- 
