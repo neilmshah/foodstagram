@@ -10,7 +10,7 @@ type like struct{
 
 type user_comment struct{
 	User_id 	string
-	Timestamp 	string
+	Timestamp 	int64
 	Comment 	string
 }
 

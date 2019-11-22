@@ -27,8 +27,8 @@ func createComment(photo_id string, user_id string, comment string){
     query := bson.M{"photo_id" : photo_id}
     var result bson.M
     err = c.Find(query).One(&result)
-    loc, _ := time.LoadLocation("UTC")
-    timestamp := time.Now().In(loc).String()
+    // loc, _ := time.LoadLocation("UTC")
+    timestamp := time.Now().UTC().Unix()
     if err != nil{
     	new_comment := user_comment{user_id, timestamp, comment}
     	new_photo := data_struct{photo_id, 0, 1, []string{}, []user_comment{new_comment}}

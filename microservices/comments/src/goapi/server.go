@@ -27,10 +27,10 @@ func NewServer() *negroni.Negroni {
 // API Routes
 func initRoutes(mx *mux.Router, formatter *render.Render) {
 	mx.HandleFunc("/like/count/{photo_id}", likeCount(formatter)).Methods("GET")
-	mx.HandleFunc("/like/{photo_id}", addLike(formatter)).Methods("POST")
+	mx.HandleFunc("/like/{photo_id}", addLike(formatter)).Methods("POST", "OPTIONS")
 	mx.HandleFunc("/like/{photo_id}", removeLike(formatter)).Methods("DELETE")
 	mx.HandleFunc("/comment/{photo_id}", commentList(formatter)).Methods("GET")
-	mx.HandleFunc("/comment/{photo_id}", addComment(formatter)).Methods("POST")
+	mx.HandleFunc("/comment/{photo_id}", addComment(formatter)).Methods("POST", "OPTIONS")
 	mx.HandleFunc("/comment/{photo_id}", removeComment(formatter)).Methods("DELETE")
 	mx.HandleFunc("/ping", pingHandler(formatter)).Methods("GET")
 }
@@ -43,9 +43,20 @@ func failOnError(err error, msg string) {
 	}
 }
 
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+}
+
+func setupResponse(w *http.ResponseWriter, req *http.Request) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+    (*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+    (*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+}
+
 // API GET Number of likes
 func likeCount(formatter *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
+		enableCors(&w)
 		var m likecount
 		_ = json.NewDecoder(req.Body).Decode(&m)
 		params := mux.Vars(req)
@@ -62,6 +73,7 @@ func likeCount(formatter *render.Render) http.HandlerFunc {
 // API to POST a new like
 func addLike(formatter *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
+		setupResponse(&w, req)
 		var m like
 		_ = json.NewDecoder(req.Body).Decode(&m)
 		var user_id string = m.User_id
@@ -98,6 +110,7 @@ func removeLike(formatter *render.Render) http.HandlerFunc {
 // API to get comment list for a photo
 func commentList(formatter *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
+		enableCors(&w)
 		var m user_comment
 		_ = json.NewDecoder(req.Body).Decode(&m)
 		var user_id string = m.User_id
@@ -114,6 +127,7 @@ func commentList(formatter *render.Render) http.HandlerFunc {
 // API to POST a new comment
 func addComment(formatter *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
+		setupResponse(&w, req)
 		var m user_comment
 		_ = json.NewDecoder(req.Body).Decode(&m)
 		var user_id string = m.User_id
