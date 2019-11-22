@@ -10,6 +10,9 @@ import (
 	"github.com/unrolled/render"
 )
 
+var COMMENTS_SNS_TOPIC string = "arn:aws:sns:us-east-1:189400394091:comments"
+var LIKES_SNS_TOPIC string = "arn:aws:sns:us-east-1:189400394091:likes"
+
 // NewServer configures and returns a Server.
 func NewServer() *negroni.Negroni {
 	formatter := render.New(render.Options{
@@ -74,6 +77,9 @@ func likeCount(formatter *render.Render) http.HandlerFunc {
 func addLike(formatter *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		setupResponse(&w, req)
+		if (*req).Method == "OPTIONS" {
+			return
+		}
 		var m like
 		_ = json.NewDecoder(req.Body).Decode(&m)
 		var user_id string = m.User_id
@@ -82,9 +88,10 @@ func addLike(formatter *render.Render) http.HandlerFunc {
 		var photo_id string = params["photo_id"]
 		fmt.Println(photo_id)
 		fmt.Println(user_id)
-		// Call the SNS
-		// Update mongodb (entry for photo and backup)
 		createLike(photo_id, user_id)
+		like_count := readLikes(photo_id)
+		// Call the SNS
+		go publishSNS(photo_id, like_count, LIKES_SNS_TOPIC)
 		formatter.JSON(w, http.StatusOK, struct{ Status string }{"Liked"})
 	}
 }
@@ -127,6 +134,9 @@ func commentList(formatter *render.Render) http.HandlerFunc {
 func addComment(formatter *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		setupResponse(&w, req)
+		if (*req).Method == "OPTIONS" {
+			return
+		}
 		var m user_comment
 		_ = json.NewDecoder(req.Body).Decode(&m)
 		var user_id string = m.User_id
@@ -141,6 +151,9 @@ func addComment(formatter *render.Render) http.HandlerFunc {
 		fmt.Println(comment)
 
 		createComment(photo_id, user_id, user_name, comment)
+		comment_count := readCommentCount(photo_id)
+		//call SNS
+		go publishSNS(photo_id, comment_count, COMMENTS_SNS_TOPIC)
 		formatter.JSON(w, http.StatusOK, struct{ Status string }{"Comment Added"})
 	}
 }

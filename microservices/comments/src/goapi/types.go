@@ -31,3 +31,8 @@ type modal_struct struct{
 	Liked		int64
 	Comments 	[]user_comment
 }
+
+type sns_struct struct{
+	Id 		string
+	Num 	int64
+}

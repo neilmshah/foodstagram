@@ -30,7 +30,7 @@ test-gumball:
 	curl localhost:3000/gumball
 
 docker-build: 
-	docker build -t goapi .
+	docker build -t shabari8695/goapi .
 	docker images
 
 docker-run:
@@ -45,6 +45,9 @@ docker-network-inspect:
 
 docker-shell:
 	docker exec -it goapi bash 
+
+docker-push:
+	docker push shabari8695/goapi:latest
 
 docker-clean:
 	docker stop goapi
