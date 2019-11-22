@@ -29,7 +29,7 @@ func initRoutes(mx *mux.Router, formatter *render.Render) {
 	mx.HandleFunc("/like/count/{photo_id}", likeCount(formatter)).Methods("GET")
 	mx.HandleFunc("/like/{photo_id}", addLike(formatter)).Methods("POST", "OPTIONS")
 	mx.HandleFunc("/like/{photo_id}", removeLike(formatter)).Methods("DELETE")
-	mx.HandleFunc("/comment/{photo_id}", commentList(formatter)).Methods("GET")
+	mx.HandleFunc("/comment/{photo_id}/{user_id}", commentList(formatter)).Methods("GET")
 	mx.HandleFunc("/comment/{photo_id}", addComment(formatter)).Methods("POST", "OPTIONS")
 	mx.HandleFunc("/comment/{photo_id}", removeComment(formatter)).Methods("DELETE")
 	mx.HandleFunc("/ping", pingHandler(formatter)).Methods("GET")
@@ -111,12 +111,11 @@ func removeLike(formatter *render.Render) http.HandlerFunc {
 func commentList(formatter *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		enableCors(&w)
-		var m user_comment
-		_ = json.NewDecoder(req.Body).Decode(&m)
-		var user_id string = m.User_id
-
 		params := mux.Vars(req)
 		var photo_id string = params["photo_id"]
+		var user_id string = params["user_id"]
+		fmt.Println(photo_id)
+		fmt.Println(user_id)
 		comments := readComments(photo_id, user_id)
 		// Code to get the value from database
 		formatter.JSON(w, http.StatusOK, comments)
@@ -132,14 +131,16 @@ func addComment(formatter *render.Render) http.HandlerFunc {
 		_ = json.NewDecoder(req.Body).Decode(&m)
 		var user_id string = m.User_id
 		var comment string = m.Comment
+		var user_name string = m.User_name
 
 		params := mux.Vars(req)
 		var photo_id string = params["photo_id"]
 		fmt.Println(photo_id)
+		fmt.Println(user_name)
 		fmt.Println(user_id)
 		fmt.Println(comment)
 
-		createComment(photo_id, user_id, comment)
+		createComment(photo_id, user_id, user_name, comment)
 		formatter.JSON(w, http.StatusOK, struct{ Status string }{"Comment Added"})
 	}
 }

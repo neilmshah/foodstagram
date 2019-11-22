@@ -10,6 +10,7 @@ type like struct{
 
 type user_comment struct{
 	User_id 	string
+	User_name	string
 	Timestamp 	int64
 	Comment 	string
 }
@@ -27,6 +28,6 @@ type data_struct struct{
 }
 
 type modal_struct struct{
-	Liked		bool
+	Liked		int64
 	Comments 	[]user_comment
 }

@@ -7,16 +7,19 @@ import (
     "gopkg.in/mgo.v2/bson"
 )
 
-func stringInSlice(a string, list []string) bool {
+func contains(a string, list []string) int64 {
+    fmt.Println(a)
+    fmt.Println(list)
     for _, b := range list {
+        fmt.Println(b)
         if b == a {
-            return true
+            return 1
         }
     }
-    return false
+    return 0
 }
 
-func createComment(photo_id string, user_id string, comment string){
+func createComment(photo_id string, user_id string, user_name, comment string){
 	session, err := mgo.Dial(mongodb_server)
     if err != nil {
         panic(err)
@@ -30,11 +33,11 @@ func createComment(photo_id string, user_id string, comment string){
     // loc, _ := time.LoadLocation("UTC")
     timestamp := time.Now().UTC().Unix()
     if err != nil{
-    	new_comment := user_comment{user_id, timestamp, comment}
+    	new_comment := user_comment{user_id, user_name, timestamp, comment}
     	new_photo := data_struct{photo_id, 0, 1, []string{}, []user_comment{new_comment}}
     	c.Insert(new_photo)
     }else{
-		change1 := bson.M{"$push":bson.M{"comments":bson.M{"user_id": user_id, "timestamp": timestamp, "comment": comment}}}
+		change1 := bson.M{"$push":bson.M{"comments":bson.M{"user_id": user_id, "user_name": user_name, "timestamp": timestamp, "comment": comment}}}
 		change2 := bson.M{"$inc":bson.M{"comment_count":1}}
 		err = c.Update(query, change1)
 		if err != nil{
@@ -65,8 +68,8 @@ func readComments(photo_id string, user_id string) modal_struct{
     dataBytes, _ := bson.Marshal(result)
     bson.Unmarshal(dataBytes, &data)
     fmt.Println(data)
-    like_status := stringInSlice(user_id, data.Likes)
-
+    like_status := contains(user_id, data.Likes)
+    fmt.Println(like_status)
     return modal_struct{like_status, data.Comments}
 }
 
