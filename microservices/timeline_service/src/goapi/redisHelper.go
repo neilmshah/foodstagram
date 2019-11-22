@@ -24,6 +24,13 @@ func saveToTimelineRedis(image_id string, image_details string){
 		fmt.Println("redis.New error: %s", err.Error())
 	}
 
+	//If duplicate POST req, ignore
+	_, err2 := redis.String(cluster.Do("HGET", "timeline", image_id))
+	if err2 == nil {
+		fmt.Println("Image ID present. Duplicate Post request")
+		return
+	}
+
 	cluster.Do("HMSET", "timeline", image_id, image_details)
 }
 
@@ -89,9 +96,9 @@ func updateCommentCountRedis(image_id string, count int64) {
 }
 
 func updateLikeCountRedis(image_id string, count int64) {
-	fmt.Println("In UpdateLikeCountRedis")
-	fmt.Println("image id: ", image_id)
-	fmt.Println("new count: ", count)
+	// fmt.Println("In UpdateLikeCountRedis")
+	// fmt.Println("image id: ", image_id)
+	// fmt.Println("new count: ", count)
 	
 	cluster, err := redis.NewCluster(
 		&redis.Options{
@@ -116,13 +123,13 @@ func updateLikeCountRedis(image_id string, count int64) {
 	}
 
 	image_details := reply[image_id]
-	fmt.Println("Image details to update: ", image_details)
+	//fmt.Println("Image details to update: ", image_details)
 	var img image
 	bytes := []byte(image_details)
 	json.Unmarshal(bytes,&img)
-	fmt.Println("Old like count: ", img.LikeCount)
+	//fmt.Println("Old like count: ", img.LikeCount)
 	img.LikeCount = count
-	fmt.Println("Updated like count: ", img.LikeCount)
+	//fmt.Println("Updated like count: ", img.LikeCount)
 
 	b, _ := json.Marshal(img)
 	s := string(b)
