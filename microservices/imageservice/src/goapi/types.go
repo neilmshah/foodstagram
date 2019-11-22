@@ -6,7 +6,7 @@ type Image struct {
 	Url 			string	    
 	UserId		 	string
 	UserName		string
-	Timestamp		string	
+	Timestamp		int64	
 }
 
 type ErrorResponse struct {
