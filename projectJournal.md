@@ -1,6 +1,6 @@
 # T800 Project Journal
 
-## Date: November 10, 2019
+## Date: November 10-15, 2019
 
 ### Amit: User Profile
 
@@ -51,7 +51,7 @@
 - Log all service calls, API calls, and user details
 - Create unit tests
 
-### Priyal: Team Management
+### Priyal: Image Service
 
 #### Features:
 
@@ -71,7 +71,7 @@
 - Setup MongoDB cluster for team details management
 - Cloudwatch integration for API logs
 
-### Shabari: Grading and Awards
+### Shabari: Comment & Like Service
 
 #### Features
 
@@ -89,7 +89,7 @@
 - REST APIs to access the CRUD operations.
 - Web UI for the comments and like to display to users.
 
-## Date: November 15, 2019
+## Date: November 15-20, 2019
 
 ### Priyal
 - Created base code for image service.
@@ -99,7 +99,16 @@
 - Setup S3 bucket to store config file.
 - Changes in Go code to read S3 bucket credentials from environment variables and use them to get config file so that the code repository does not expose any credentials.
 
-## Date: November 20, 2019
+### Neil 
+- Base GO API code for timeline microservice
+- Redis Cluster on EC2 instances with master slave replication
+- Timeline API (GET)
+- Image API (SNS POST) 
+- Dockerize code and deploy to AWS Private network
+- Initial React Timeline Page
+
+
+## Date: November 20-23, 2019
 
 ### Priyal
 - Added post image API.
@@ -107,4 +116,11 @@
 - Front end changes to add a post.
 - Setup SNS to send messages to timeline service.
 - AWS setup to deploy image service to private ec2 instance and setup network load balancer, auto scaling and API gateway.
-- 
+
+
+### Neil
+- UpdateCommentCount API (SNS)
+- UpdateLikeCount API (SNS)
+- Integrate frontend react Timeline page with all APIs
+- Dockerize and deploy all services to AWS
+
