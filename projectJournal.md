@@ -79,7 +79,6 @@
 - Users can edit or delete comments on any post
 - Users can dislike a previously liked post
 
-
 #### Requirements
 
 - Understand Go APIs (gorilla/mux), essentials of ReactJs, Kubernetes and AWS development pipeline.
@@ -92,6 +91,7 @@
 ## Date: November 15-20, 2019
 
 ### Amit
+
 - Created base code for user profile service.
 - Created MongoDB sharded cluster and hosted in EC2 private instance.
 - Added get user API.
@@ -100,32 +100,37 @@
 - Changes in Go code to read S3 bucket credentials from environment variables and use them to get config file so that the code repository does not expose any credentials.
 
 ### Priyal
+
 - Created base code for image service.
 - Created MongoDB sharded cluster and hosted in EC2 private instance.
 - Added get image API.
 - React code for front end.
 - Setup S3 bucket to store config file.
 - Changes in Go code to read S3 bucket credentials from environment variables and use them to get config file so that the code repository does not expose any credentials.
+- Added post image API.
+- S3 integration to store image to S3 in private bucket.
 
-### Neil 
+### Neil
+
 - Base GO API code for timeline microservice
 - Redis Cluster on EC2 instances with master slave replication
 - Timeline API (GET)
-- Image API (SNS POST) 
+- Image API (SNS POST)
 - Dockerize code and deploy to AWS Private network
 - Initial React Timeline Page
 
 ### Shabari
+
 - Connect to mongodb (mongo atlas) from golang and read simple collections
 - Create, Read and Delete operations using golang for comments and likes
 - SNS code to publish like and comment updated for timeline
 - Deploy in private AWS cluster with Network Load Balancer
 - APIs using gorilla/mux to expose the operations
 
-
 ## Date: November 20-23, 2019
 
 ### Amit
+
 - Added user login API.
 - Added user signup API.
 - S3 integration to store image to S3 in private bucket.
@@ -133,22 +138,23 @@
 - AWS setup to deploy image service to private ec2 instance and setup network load balancer and API gateway.
 
 ### Priyal
-- Added post image API.
-- S3 integration to store image to S3 in private bucket.
+
 - Front end changes to add a post.
 - Setup SNS to send messages to timeline service.
 - AWS setup to deploy image service to private ec2 instance and setup network load balancer, auto scaling and API gateway.
-
+- API to get all images posted by a particular user.
+- API to get all images which will be used as backup when timeline service fails.
 
 ### Neil
+
 - UpdateCommentCount API (SNS)
 - UpdateLikeCount API (SNS)
 - Integrate frontend react Timeline page with all APIs
 - Dockerize and deploy all services to AWS
 
 ### Shabari
+
 - Mongodb cluster setup with replication and sharding in private AWS instances.
 - Code to publish to SNS topics
 - API Gateway setup to expose the REST APIs for operations
 - Frontend to POST Comments, Likes and read them for each picture.
-
