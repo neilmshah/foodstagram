@@ -11,3 +11,6 @@ run: install
 
 docker-build:
 	docker build -t amit44/frontend .
+
+docker-run:
+	docker run -td  -p 3000:3000  amit44/frontend:latest
