@@ -27,6 +27,7 @@ import Box from "@material-ui/core/Box";
 import TextField from "@material-ui/core/TextField";
 import * as CONST from "../../config";
 import PropTypes from "prop-types";
+import Moment from "react-moment";
 class TimeLinePage extends React.Component {
   static propTypes = {
     history: PropTypes.object.isRequired
@@ -165,7 +166,7 @@ class TimeLinePage extends React.Component {
           var commentObj = {
             User_name: this.state.fullname,
             Comment: myComment,
-            Timestamp: Date.now()
+            Timestamp: Date.parse(new Date().toISOString().valueOf()) / 1000
           };
           var comments = this.state.comments;
           comments.push(commentObj);
@@ -228,7 +229,6 @@ class TimeLinePage extends React.Component {
           {this.state.timeline.map((post, index) => {
             return (
               <Grid
-                container
                 item
                 xs={6}
                 spacing={0}
@@ -244,9 +244,11 @@ class TimeLinePage extends React.Component {
                     <h3 className={classes.cardTitle}>{post.UserName}</h3>
                     <p>{post.Description}</p>
                     <p>
-                      {/* <small className={classes.textMuted}>
-                        Last updated 3 mins ago
-                      </small> */}
+                      <small className={classes.textMuted}>
+                        <Moment fromNow unix>
+                          {post.Timestamp}
+                        </Moment>
+                      </small>
                     </p>
                     <Badge
                       className={classes.marginLeft}
@@ -294,11 +296,6 @@ class TimeLinePage extends React.Component {
                       />
                       <CardBody className={classes.description}>
                         <p>{this.state.selectedPost.Description}</p>
-                        {/* <p>
-                          <small className={classes.textMuted}>
-                            Last updated 3 mins ago
-                          </small>
-                        </p> */}
                       </CardBody>
                     </Card>
                     <Fab
@@ -323,6 +320,13 @@ class TimeLinePage extends React.Component {
                           <Box>
                             <h6>{comment.User_name}</h6>
                             <p>{comment.Comment}</p>
+                            <p>
+                              <small className={classes.textMuted}>
+                                <Moment fromNow unix>
+                                  {comment.Timestamp}
+                                </Moment>
+                              </small>
+                            </p>
                           </Box>
                         );
                       })}
@@ -363,14 +367,10 @@ class TimeLinePage extends React.Component {
         </Grid>
 
         <Dialog
-          //   fullScreen={fullScreen}
           open={this.state.showDialog}
           onClose={this.handleDialogClose}
           aria-labelledby="responsive-dialog-title"
         >
-          {/* <DialogTitle id="responsive-dialog-title">
-            {"Pardon the interruption."}
-          </DialogTitle> */}
           <DialogContent>
             <DialogContentText>
               Please sign in to continue exploring Foodstagram.
