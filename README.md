@@ -13,9 +13,11 @@ Foodstagram is a scalable containerized application similar to Instagram where u
 ## Key Design Features
 - CQRS
 - Event Sourcing
-- Microservice Architecture
-- Database Sharding 
-- Replication & Fault Tolerance
+- Graceful degradation of each microservice
 - AKF scale cube for each microservice
+  - X-axis - Load Balance between multiple cloned docker hosts
+  - Y-axis - Microservice architecture to decouple functionalities
+  - Z-axis - Database Sharding for each microservice
 
 ## System Architecture
+![Foodstagram Architecture](https://github.com/nguyensjsu/fa19-281-t800/blob/master/screenshots/systemArchitecture.png)
