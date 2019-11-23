@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios"
+import axios from "axios";
 import * as CONST from "../../config";
 // @material-ui/core components
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -25,7 +25,6 @@ import PropTypes from "prop-types";
 import image from "assets/img/food1.jpeg";
 import { stringify } from "querystring";
 
-
 class SignupPage extends React.Component {
   static propTypes = {
     history: PropTypes.object.isRequired
@@ -35,18 +34,17 @@ class SignupPage extends React.Component {
     super(props);
     // we use this to make the card to appear after the page has been rendered
     this.state = {
-      firstname:"",
-      lastname:"",
+      firstname: "",
+      lastname: "",
       username: "",
       password: "",
-      redirectToLogin:false
+      redirectToLogin: false
     };
   }
-  
+
   render() {
-    if(this.state.redirectToLogin)
-      this.props.history.push("/login");
-    const { classes,...rest } = this.props;
+    if (this.state.redirectToLogin) this.props.history.push("/login");
+    const { classes, ...rest } = this.props;
     return (
       <div>
         <Header
@@ -70,9 +68,9 @@ class SignupPage extends React.Component {
                 <Card>
                   <form className={classes.form}>
                     <CardHeader color="success" className={classes.cardHeader}>
-                      <h4>Signup</h4>
+                      <h4>Enter details</h4>
                     </CardHeader>
-                   
+
                     <CardBody>
                       <CustomInput
                         labelText="First Name..."
@@ -82,7 +80,7 @@ class SignupPage extends React.Component {
                         }}
                         inputProps={{
                           type: "text",
-                          onChange:this.handlesOnFirstnameChange,
+                          onChange: this.handlesOnFirstnameChange,
                           endAdornment: (
                             <InputAdornment position="end">
                               <People className={classes.inputIconsColor} />
@@ -106,7 +104,7 @@ class SignupPage extends React.Component {
                           )
                         }}
                       />
-                       <CustomInput
+                      <CustomInput
                         labelText="Username..."
                         id="first"
                         formControlProps={{
@@ -143,8 +141,13 @@ class SignupPage extends React.Component {
                       />
                     </CardBody>
                     <CardFooter className={classes.cardFooter}>
-                      <Button simple color="success" size="lg"onClick={this.handlesOnSignup} >
-                        Get started
+                      <Button
+                        simple
+                        color="success"
+                        size="lg"
+                        onClick={this.handlesOnSignup}
+                      >
+                        Sign Up
                       </Button>
                     </CardFooter>
                   </form>
@@ -156,46 +159,42 @@ class SignupPage extends React.Component {
         </div>
       </div>
     );
-
   }
-
 
   handlesOnPasswordChange = (event: SyntheticEvent<>) => {
     if (event) {
       this.setState({ password: event.target.value.trim() });
     }
   };
-  
+
   handlesOnSignup = (event: SyntheticEvent<>) => {
     const { history } = this.props;
     const { firstname, lastname, username, password } = this.state;
     var body = {
       username: username,
       password: password,
-      firstname:firstname,
-      lastname:lastname
-    }
+      firstname: firstname,
+      lastname: lastname
+    };
 
+    axios
+      .post(CONST.USER_PROFIE_SERVICE + "/register", body)
+      .then(res => {
+        if (res.status != 200) {
+          alert("Service Error");
+        } else {
+          var resObj = res.data;
+          if (resObj.result != "Registration Successful") {
+            alert("Username already exist");
+            return;
+          }
 
-    axios.post(CONST.USER_PROFIE_SERVICE+'/register', body)
-    .then(res=> {
-      if(res.status !=200){
-        alert("Service Error");
-      }else{
-        var resObj = res.data
-        if(resObj.result != "Registration Successful"){
-          alert(resObj.error)
-          return
+          this.setState({ redirectToLogin: true });
         }
-          
-        this.setState({redirectToLogin:true})
-      }
-     
-    })
-    .catch(function (error) {
-        alert("Error :" +stringify(error))
-    });
-
+      })
+      .catch(function(error) {
+        alert("Error occured. Please try again!");
+      });
   };
 
   handlesOnUsernameChange = (event: SyntheticEvent<>) => {
@@ -204,16 +203,15 @@ class SignupPage extends React.Component {
     }
   };
 
-handlesOnFirstnameChange = (event: SyntheticEvent<>) => {
-  if (event) {
-    this.setState({ firstname: event.target.value.trim() });
-  }
-}
-handlesOnLastnameChange = (event: SyntheticEvent<>) => {
-  if (event) {
-    this.setState({ lastname: event.target.value.trim() });
-  }
-};
+  handlesOnFirstnameChange = (event: SyntheticEvent<>) => {
+    if (event) {
+      this.setState({ firstname: event.target.value.trim() });
+    }
+  };
+  handlesOnLastnameChange = (event: SyntheticEvent<>) => {
+    if (event) {
+      this.setState({ lastname: event.target.value.trim() });
+    }
+  };
 }
 export default withStyles(signupPageStyle)(SignupPage);
-

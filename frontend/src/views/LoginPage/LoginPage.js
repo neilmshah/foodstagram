@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios"
+import axios from "axios";
 // @material-ui/core components
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Icon from "@material-ui/core/Icon";
@@ -24,9 +24,7 @@ import image from "assets/img/food1.jpeg";
 import { stringify } from "querystring";
 import * as CONST from "../../config";
 
-
 class LoginPage extends React.Component {
-  
   static propTypes = {
     history: PropTypes.object.isRequired
   };
@@ -37,14 +35,13 @@ class LoginPage extends React.Component {
     this.state = {
       username: "",
       password: "",
-      redirectToHome:false
+      redirectToHome: false
     };
   }
-  
+
   render() {
-    if(this.state.redirectToHome)
-      this.props.history.push("/home");
-    const {classes, ...rest } = this.props;
+    if (this.state.redirectToHome) this.props.history.push("/home");
+    const { classes, ...rest } = this.props;
     return (
       <div>
         <Header
@@ -68,10 +65,9 @@ class LoginPage extends React.Component {
                 <Card>
                   <form className={classes.form}>
                     <CardHeader color="success" className={classes.cardHeader}>
-                      <h4>Login</h4>
+                      <h4>Enter credentials</h4>
                     </CardHeader>
                     <CardBody>
-                      
                       <CustomInput
                         labelText="Username"
                         id="username"
@@ -109,30 +105,31 @@ class LoginPage extends React.Component {
                       />
                     </CardBody>
                     <CardFooter className={classes.cardFooter}>
-                      <Button simple color="success" size="lg" onClick={this.handlesOnLogin}>
-                        Get started
+                      <Button
+                        simple
+                        color="success"
+                        size="lg"
+                        onClick={this.handlesOnLogin}
+                      >
+                        Login
                       </Button>
                     </CardFooter>
 
                     <CardFooter className={classes.cardFooter}>
-                    New to Foodstagram?
-                    <a
-                      href=""
-                      onClick={e => {
-                        this.props.history.push("/signup");
-                      }}
-                    >
-                    {"   "}Join now
-                    </a>
+                      New to Foodstagram?
+                      <a
+                        href=""
+                        onClick={e => {
+                          this.props.history.push("/signup");
+                        }}
+                      >
+                        {"   "}Join now
+                      </a>
                     </CardFooter>
                   </form>
-
                 </Card>
-
               </GridItem>
-
             </GridContainer>
-
           </div>
 
           <Footer whiteFont />
@@ -146,34 +143,33 @@ class LoginPage extends React.Component {
     var body = {
       username: username,
       password: password
-    }
+    };
 
-    axios.post(CONST.USER_PROFIE_SERVICE+'/login', body)
-    .then(res=> {
-      if(res.status !=200){
-        alert("Service Error");
-      }else{
-        if(res.data.error) {
-          alert(res.data.error)
-          return
+    axios
+      .post(CONST.USER_PROFIE_SERVICE + "/login", body)
+      .then(res => {
+        if (res.status != 200) {
+          alert("Service Error");
+        } else {
+          if (res.data.error) {
+            alert(res.data.error);
+            return;
+          }
+          var user = res.data;
+          if (user == null || user.username == null) {
+            alert("Username cannot be null");
+            return;
+          }
+          localStorage.username = user.username;
+          localStorage.user_fullname = user.firstname + " " + user.lastname;
+          localStorage.user_id = user.userID;
+          localStorage.token = user.token;
+          this.setState({ redirectToHome: true });
         }
-        var user = res.data
-        if (user== null || user.username == null){
-          alert("Username cannot be null");
-          return
-        }
-        localStorage.username = user.username;
-        localStorage.user_fullname = user.firstname + " " + user.lastname
-        localStorage.user_id = user.userID;
-        localStorage.token = user.token
-        this.setState({redirectToHome:true})
-      }
-     
-    })
-    .catch(function (error) {
-        alert("Error :" +stringify(error))
-    });
-
+      })
+      .catch(function(error) {
+        alert("An error occured. Please try again");
+      });
   };
 
   handlesOnPasswordChange = (event: SyntheticEvent<>) => {
@@ -181,7 +177,6 @@ class LoginPage extends React.Component {
       this.setState({ password: event.target.value.trim() });
     }
   };
-  
 
   handlesOnUsernameChange = (event: SyntheticEvent<>) => {
     if (event) {

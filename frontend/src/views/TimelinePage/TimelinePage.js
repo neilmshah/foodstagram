@@ -140,8 +140,6 @@ class TimeLinePage extends React.Component {
         body
       )
       .then(res => {
-        console.log("Status: " + res.status);
-        console.log("Data: " + JSON.stringify(res.data));
         if (res.status == 200) {
           this.setState({ hasLiked: true });
         }
@@ -202,7 +200,7 @@ class TimeLinePage extends React.Component {
 
   handlesOnCommentChange = (event: SyntheticEvent<>) => {
     if (event) {
-      var commentMsg = event.target.value.trim();
+      var commentMsg = event.target.value;
       this.setState({ commentMsg: commentMsg });
     }
   };
