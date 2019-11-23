@@ -36,7 +36,9 @@ func initConfig() {
 func initRoutes(mx *mux.Router, formatter *render.Render) {
 	mx.HandleFunc("/ping", pingHandler(formatter)).Methods("GET")
 	mx.HandleFunc("/image/{id}", imageHandler(formatter)).Methods("GET")
+	mx.HandleFunc("/image", allImagesHandler(formatter)).Methods("GET")
 	mx.HandleFunc("/image", imagePostHandler(formatter)).Methods("POST", "OPTIONS")
+	mx.HandleFunc("/user/{userId}", userImagesHandler(formatter)).Methods("GET")
 }
 
 // API Ping Handler
@@ -54,13 +56,13 @@ func enableCors(w *http.ResponseWriter) {
 func setupResponse(w *http.ResponseWriter, req *http.Request) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
     (*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-    (*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+    (*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, apikey")
 }
 
 // API Get Image Handler
 func imageHandler(formatter *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
-		enableCors(&w)
+		setupResponse(&w, req)
 		params := mux.Vars(req)
 		var imageId string = params["id"]
 		fmt.Println( "Image ID: ", imageId )
@@ -107,8 +109,7 @@ func imagePostHandler(formatter *render.Render) http.HandlerFunc {
 		image.UserId = req.FormValue("userid")
 		image.UserName = req.FormValue("username")
 
-		loc, _ := time.LoadLocation("UTC")
-		image.Timestamp = time.Now().In(loc).String()
+		image.Timestamp = time.Now().UTC().Unix()
 
 		foodImageFile, _, err := req.FormFile("foodImage")
 		if err != nil {
@@ -154,5 +155,66 @@ func imagePostHandler(formatter *render.Render) http.HandlerFunc {
 		}
 		go publishSNS(image)
 		formatter.JSON(w, http.StatusOK, image)
+	}
+}
+
+// API Get Images For User Handler
+func userImagesHandler(formatter *render.Render) http.HandlerFunc {
+	return func(w http.ResponseWriter, req *http.Request) {
+		enableCors(&w)
+		params := mux.Vars(req)
+		var userId string = params["userId"]
+		fmt.Println( "UserId: ", userId )
+		session, err := mgo.Dial(mongodb_server)
+        if err != nil {
+			var errorResponse ErrorResponse
+			errorResponse.Message = "Server Error"
+			formatter.JSON(w, http.StatusInternalServerError, errorResponse)
+			panic(err)
+			return
+        }
+        defer session.Close()
+        session.SetMode(mgo.Monotonic, true)
+        conn := session.DB(mongodb_database).C(mongodb_collection)
+		result := make([]Image, 10, 10)
+		query := bson.M{"userid" : userId}
+		err = conn.Find(query).All(&result)
+        if err != nil {
+			log.Print(err)
+			var errorResponse ErrorResponse
+			errorResponse.Message = "Images not found for user"
+			formatter.JSON(w, http.StatusBadRequest, errorResponse)
+        } else {
+			fmt.Println("Users images:", result )
+			formatter.JSON(w, http.StatusOK, result)
+		}
+	}
+}
+
+// API Get All Images Handler
+func allImagesHandler(formatter *render.Render) http.HandlerFunc {
+	return func(w http.ResponseWriter, req *http.Request) {
+		enableCors(&w)
+		session, err := mgo.Dial(mongodb_server)
+        if err != nil {
+			var errorResponse ErrorResponse
+			errorResponse.Message = "Server Error"
+			formatter.JSON(w, http.StatusInternalServerError, errorResponse)
+			panic(err)
+			return
+        }
+        defer session.Close()
+        session.SetMode(mgo.Monotonic, true)
+        conn := session.DB(mongodb_database).C(mongodb_collection)
+		result := make([]Image, 10, 10)
+		err = conn.Find(nil).All(&result)
+        if err != nil {
+			log.Print(err)
+			var errorResponse ErrorResponse
+			errorResponse.Message = "No image found"
+			formatter.JSON(w, http.StatusBadRequest, errorResponse)
+        } else {
+			formatter.JSON(w, http.StatusOK, result)
+		}
 	}
 }
