@@ -115,6 +115,13 @@
 - Dockerize code and deploy to AWS Private network
 - Initial React Timeline Page
 
+### Shabari
+- Connect to mongodb (mongo atlas) from golang and read simple collections
+- Create, Read and Delete operations using golang for comments and likes
+- SNS code to publish like and comment updated for timeline
+- Deploy in private AWS cluster with Network Load Balancer
+- APIs using gorilla/mux to expose the operations
+
 
 ## Date: November 20-23, 2019
 
@@ -138,4 +145,10 @@
 - UpdateLikeCount API (SNS)
 - Integrate frontend react Timeline page with all APIs
 - Dockerize and deploy all services to AWS
+
+### Shabari
+- Mongodb cluster setup with replication and sharding in private AWS instances.
+- Code to publish to SNS topics
+- API Gateway setup to expose the REST APIs for operations
+- Frontend to POST Comments, Likes and read them for each picture.
 
