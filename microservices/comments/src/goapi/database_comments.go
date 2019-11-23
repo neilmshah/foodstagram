@@ -50,6 +50,27 @@ func createComment(photo_id string, user_id string, user_name, comment string){
 	}
 }
 
+func readCommentCount(photo_id string) int64{
+    session, err := mgo.Dial(mongodb_server)
+    if err != nil {
+        panic(err)
+    }
+    defer session.Close()
+    session.SetMode(mgo.Monotonic, true)
+    c := session.DB(mongodb_database).C(mongodb_collection)
+    query := bson.M{"photo_id" : photo_id}
+    var result bson.M
+    err = c.Find(query).One(&result)
+    if err != nil{
+        panic(err)
+    }
+    var data data_struct
+    dataBytes, _ := bson.Marshal(result)
+    bson.Unmarshal(dataBytes, &data)
+    fmt.Println(data)
+    return data.Comment_count
+}
+
 func readComments(photo_id string, user_id string) modal_struct{
 	session, err := mgo.Dial(mongodb_server)
     if err != nil {

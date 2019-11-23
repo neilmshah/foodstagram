@@ -91,6 +91,14 @@
 
 ## Date: November 15-20, 2019
 
+### Amit
+- Created base code for user profile service.
+- Created MongoDB sharded cluster and hosted in EC2 private instance.
+- Added get user API.
+- React code for front end.
+- Setup S3 bucket to store config file.
+- Changes in Go code to read S3 bucket credentials from environment variables and use them to get config file so that the code repository does not expose any credentials.
+
 ### Priyal
 - Created base code for image service.
 - Created MongoDB sharded cluster and hosted in EC2 private instance.
@@ -109,6 +117,13 @@
 
 
 ## Date: November 20-23, 2019
+
+### Amit
+- Added user login API.
+- Added user signup API.
+- S3 integration to store image to S3 in private bucket.
+- Front end changes for signup and login.
+- AWS setup to deploy image service to private ec2 instance and setup network load balancer and API gateway.
 
 ### Priyal
 - Added post image API.
