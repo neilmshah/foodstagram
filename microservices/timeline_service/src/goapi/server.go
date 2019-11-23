@@ -108,7 +108,7 @@ func updatecomments(formatter *render.Render) http.HandlerFunc {
 
 		fmt.Println("Comment details: ", comments)
 
-		//updateCommentCountRedis(comments.Id, comment.Num)
+		updateCommentCountRedis(comments.Id, comments.Num)
 
 		formatter.JSON(w, http.StatusOK, struct{ Status string }{"Comment count updated"})
 	}
@@ -132,7 +132,7 @@ func updatelikes(formatter *render.Render) http.HandlerFunc {
 
 		fmt.Println("Comment details: ", likes)
 
-		//updateLikeCountRedis(likes.Id, likes.Num)
+		updateLikeCountRedis(likes.Id, likes.Num)
 
 		formatter.JSON(w, http.StatusOK, struct{ Status string }{"Like count updated"})
 	}

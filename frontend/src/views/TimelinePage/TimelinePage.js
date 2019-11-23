@@ -51,6 +51,10 @@ class TimeLinePage extends React.Component {
     this.handleLike = this.handleLike.bind(this);
   }
   componentDidMount() {
+    this.getTimeline();
+  }
+
+  getTimeline = () => {
     axios
       .get(CONST.TIMELINE_SERVICE + "/timeline", {
         headers: {
@@ -63,7 +67,35 @@ class TimeLinePage extends React.Component {
         var timeline = res.data.Timeline;
         if (timeline.length != 0)
           timeline.sort(
-            (a, b) => parseInt(a.Timestamp) - parseInt(b.Timestamp)
+            (a, b) => parseInt(b.Timestamp) - parseInt(a.Timestamp)
+          );
+        if (res.status == 200) {
+          this.setState({
+            timeline: timeline
+          });
+        } else {
+          this.getAllPosts();
+        }
+      })
+      .catch(e => {
+        this.getAllPosts();
+      });
+  };
+
+  getAllPosts = () => {
+    axios
+      .get(CONST.IMAGE_SERVICE + "/image", {
+        headers: {
+          apikey: process.env.REACT_APP_IMAGE_SERVICE_AUTH_KEY
+        }
+      })
+      .then(res => {
+        console.log("Status: " + res.status);
+        console.log("Data: " + JSON.stringify(res.data));
+        var timeline = res.data;
+        if (timeline.length != 0)
+          timeline.sort(
+            (a, b) => parseInt(b.Timestamp) - parseInt(a.Timestamp)
           );
         if (res.status == 200) {
           this.setState({
@@ -71,12 +103,9 @@ class TimeLinePage extends React.Component {
           });
         }
       });
-  }
+  };
 
   getCommentsForImage = imageId => {
-    // var body = {
-    //   user_id: this.state.userid
-    // };
     axios
       .get(
         CONST.COMMENTS_LIKES_SERVICE +
@@ -164,6 +193,7 @@ class TimeLinePage extends React.Component {
       comments: [],
       commentMsg: ""
     });
+    this.getTimeline();
   };
 
   handleDialogClose = () => {
