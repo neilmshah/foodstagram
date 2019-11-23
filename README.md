@@ -21,3 +21,6 @@ Foodstagram is a scalable containerized application similar to Instagram where u
 
 ## System Architecture
 ![Foodstagram Architecture](https://github.com/nguyensjsu/fa19-281-t800/blob/master/screenshots/systemArchitecture.png)
+
+## Foodstagram Demo
+![Foodstagram Gif](https://github.com/nguyensjsu/fa19-281-t800/blob/master/screenshots/foodstagram.gif)
